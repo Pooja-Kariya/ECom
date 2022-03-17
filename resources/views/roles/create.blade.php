@@ -2,6 +2,17 @@
 @section('content')
 <form  class="col-md-10 mx-auto" action="{{route('roles.store')}}" method="post" >
     @csrf
+    <h1>Enter Roles Details</h1>
+    @if (Session::has('success'))
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5>{!! Session::get('success') !!}</h5>
+                    </div>
+                </div>
+            </div>
+        @endif
     <div class="form-group">
         <label for="name">Name</label>
             <div>
@@ -19,6 +30,7 @@
         </div>
 </form>
 @endsection
+
 {{-- @extends('layouts.menus')
 @section('content')
 <form>

@@ -7,12 +7,13 @@
             @csrf
         <h1>Enter Order Details</h1>
         <div class="mb-3 col-md-3">
-            <label for="user" name="user">Product ID</label><br>
-            <input type="text" id="user" name="user" value="{{$order->user}}" ><br>
+            <label for="user_id" name="user_id">Product ID</label><br>
+            <input type="text" id="user_id" name="user_id" value="{{$order->user_id}}" ><br>
         </div>
+
         <div class="mb-3 col-md-3">
-            <label for="product" name="product">Product ID</label><br>
-            <input type="text" id="product" name="product" value="{{$order->product}}" ><br>
+            <label for="product_id" name="product_id">Product ID</label><br>
+            <input type="text" id="product_id" name="product_id" value="{{$order->product_id}}" ><br>
         </div>
         <div class="mb-3 col-md-3">
             <label for="price" name="price">Price</label><br>
@@ -34,9 +35,15 @@
             <label for="total" name="total">Total</label><br>
             <input type="text" id="total" name="total" value="{{$order->total}}" ><br>
         </div>
-        <div class="mb-3 col-md-3">
-            <label for="status" name="status">Status</label><br>
-            <input type="text" id="status" name="status" value="{{$order->status}}"><br>
+        <div class="form-group">
+            <h5 class="card-title">Status</h5>
+            <div>
+                <select  id="status" name="status" class="form-control">
+                    <option value="" class="option_color">Select Status</option>
+                    <option>Ordered</option>
+                    <option>Unordered</option>
+                </select>
+            </div>
         </div>
         <div class="mb-3 col-md-3">
             <label for="tracking_number" name="tracking_number">Tracking number</label><br>

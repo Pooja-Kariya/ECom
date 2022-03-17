@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Exports\TransactionsExport;
+use App\Imports\TransactionsImport;
+use App\Models\Order;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionController extends Controller
 {
@@ -13,10 +17,30 @@ class TransactionController extends Controller
         return view('transactions.index',compact('transaction'));
     }
 
+    public function export()
+    {
+        return Excel::download(new TransactionsExport(), fileName: 'transactions.xlsx');
+    }
+
+    public function export_format($format)
+    {
+        $extension = strtolower($format);
+        if(in_array($format, ['Mpdf', 'Dompdf','Tcpdf'])) $extension = 'pdf';
+        return Excel::download(new TransactionsExport(), 'transactions.'.$extension, $format);
+
+    }
+
+    public function import()
+    {
+        Excel::import(new TransactionsImport(), request()->file('import'));
+        return redirect()->route('transactions.index')->withMessage('Successfully imported.');
+    }
+
     public function edit($id)
     {
         $transaction= Transaction::find($id);
-        return view('transactions.edit',compact('transaction'));
+        $orders  = Order::all();
+        return view('transactions.edit',compact('transaction','orders'));
     }
     public function update($id, Request $request)
     {

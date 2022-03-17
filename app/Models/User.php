@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        // 'password',
         'mobile',
         'address',
         'country_id',
@@ -27,7 +28,8 @@ class User extends Authenticatable
         'city_id',
         'pincode',
         'role_id',
-        'password',
+        'image',
+
     ];
 
     /**
@@ -62,4 +64,8 @@ class User extends Authenticatable
         {
             return $this->hasOne(City::class,'id','city_id');
         }
+    public function role()
+    {
+        return $this->hasOne(Role::class,'id','role_id');
+    }
 }

@@ -1,7 +1,7 @@
 @extends('dashboard')
 @section('content')
 <div class="container mt-5">
-    <form class="col-md-10 mx-auto" method="post" action="{{route('product.update', $product->id)}}">
+    <form class="col-md-10 mx-auto" method="post" action="{{route('product.update', $product->id)}}" enctype="multipart/form-data">
         @method('POST')
         @csrf
         <h1>Enter Products Details</h1>
@@ -47,12 +47,23 @@
             </select>
         </div>
 
-        <div class="form-group"
-            <label for="status" name="status">Status</label><br>
+        <div class="form-group">
+            <h5 class="card-title">Status</h5>
             <div>
-            <input type="text" class="form-control" id="status" name="status" value="{{$product->status}}"><br>
+                <select  id="status" name="status" class="form-control">
+                    <option value="" class="option_color">Select Status</option>
+                    <option>Active</option>
+                    <option>Deactivate</option>
+                </select>
             </div>
         </div>
+
+        <div class="mb-3">
+            <label for="image" name="image" class="form-label">Product Image</label><br>
+            <input type="file" id="image" name="image" class="form-label"><br>
+            <img src="/images/{{$product->image}}" width="300px">
+        </div>
+
         <div class="form-group">
             <button type="reset" class="btn btn-primary" name="reset" value="reset">Reset</button>
             <button type="submit" class="btn btn-primary" name="submit" value="Submit">Submit</button>

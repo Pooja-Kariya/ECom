@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
+use App\Models\Country;
+use App\Models\State;
+use App\Models\City;
+use App\Models\Role;
+
 class RegisteredUserController extends Controller
 {
     /**
@@ -20,7 +25,20 @@ class RegisteredUserController extends Controller
      */
     public function create()
     {
-        return view('auth.register');
+        $roles = Role::all();
+        $data['countries'] = Country::get(["name", "id"]);
+        return view('auth.register', $data, compact('roles'));
+    }
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where("country_id",$request->country_id)->get(["name", "id"]);
+        return response()->json($data);
+    }
+
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where("state_id",$request->state_id)->get(["name", "id"]);
+        return response()->json($data);
     }
 
     /**
@@ -39,17 +57,23 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time().'.'.$extension;
+            $file->move('user_images/',$filename);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'address' => $request->address,
-            'country'=> $request->country,
-            'state' => $request->state,
-            'city' => $request->city,
+            'country_id'=> $request->country_id,
+            'state_id' => $request->state_id,
+            'city_id' => $request->city_id,
             'pincode' => $request->pincode,
             'role_id' => $request->role_id,
             'password' => Hash::make($request->password),
+            'image'=>$filename,
 
         ]);
 
@@ -59,4 +83,23 @@ class RegisteredUserController extends Controller
 
         return redirect(RouteServiceProvider::HOME);
     }
+
+    //  public function create()
+    //  {
+    //     $roles = Role::all();
+    //      $data['countries'] = Country::get(["name", "id"]);
+    //      return view('users.create', $data, compact('roles'));
+    //  }
+
+    // public function fetchState(Request $request)
+    // {
+    //     $data['states'] = State::where("country_id",$request->country_id)->get(["name", "id"]);
+    //     return response()->json($data);
+    // }
+
+    // public function fetchCity(Request $request)
+    // {
+    //     $data['cities'] = City::where("state_id",$request->state_id)->get(["name", "id"]);
+    //     return response()->json($data);
+    // }
 }

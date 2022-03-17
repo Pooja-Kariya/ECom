@@ -1,6 +1,6 @@
 @extends('dashboard')
 @section('content')
-<form method="post" action="{{route('roles.update', $role->id)}}" class="col-md-10 mx-auto">
+<form method="post" action="{{route('role.update', $role->id)}}" class="col-md-10 mx-auto">
     @method('POST')
     @csrf
     <div class="form-group">
@@ -16,7 +16,7 @@
                 </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" name="submit" value="Submit">Sign up</button>
+            <button type="submit" class="btn btn-primary" name="submit" value="Submit">Submit</button>
         </div>
 </form>
 

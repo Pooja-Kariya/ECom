@@ -8,6 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'product_id',
+        'price',
+        'tax',
+        'delivery_charges',
+        'quantity',
+        'total',
+        'status',
+        'tracking_number',
+
+    ];
     public function user()
     {
         return $this->hasOne(User::class,'id','user_id');

@@ -4,15 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Exports\OrdersExport;
+use App\Imports\OrdersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $order = Order::with('user','product')->get();
-        return view('orders.index',compact('order'));
+        $orders = Order::with('user','product')->get();
+        return view('orders.index',compact('orders'));
     }
+
+    public function export()
+    {
+        return Excel::download(new OrdersExport(), fileName: 'orders.xlsx');
+    }
+
+    public function export_format($format)
+    {
+        $extension = strtolower($format);
+        if(in_array($format, ['Mpdf', 'Dompdf','Tcpdf'])) $extension = 'pdf';
+        return Excel::download(new OrdersExport(), 'orders.'.$extension, $format);
+
+    }
+
+    public function import()
+    {
+        Excel::import(new OrdersImport(), request()->file('import'));
+        return redirect()->route('orders.index')->withMessage('Successfully imported.');
+    }
+
+
 
     public function edit($id)
     {

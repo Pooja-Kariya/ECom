@@ -1,9 +1,29 @@
 @extends('dashboard')
 @section('content')
 <div class="container mt-5">
-    <form class="col-md-10 mx-auto" action="{{route('products.store')}}" method="post">
+    <form class="col-md-10 mx-auto" action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
         @csrf
         <h1>Enter Products Details</h1>
+        @if (Session::has('success'))
+            <div class="row">
+                <div class="col-md-8 col-md-offset-1">
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h5>{!! Session::get('success') !!}</h5>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+            @if(session('error'))
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>{{session('error')}}</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
         <div class="form-group"
             <label for="name" name="name">Name</label><br>
             <div>
@@ -47,12 +67,22 @@
             </select>
         </div>
 
-        <div class="form-group"
-            <label for="status" name="status">Status</label><br>
+        <div class="form-group">
+            <h5 class="card-title">Status</h5>
             <div>
-            <input type="text" class="form-control" id="status" name="status" ><br>
+                <select  id="status" name="status" class="form-control">
+                    <option value="" class="option_color">Select Status</option>
+                    <option>Active</option>
+                    <option>Deactivate</option>
+                </select>
             </div>
         </div>
+
+        <div class="mb-3">
+            <label for="image" name="image" class="form-label">Product Image</label><br>
+            <input type="file" id="image" name="image" class="form-label"><br>
+          </div>
+
         <div class="form-group">
             <button type="reset" class="btn btn-primary" name="reset" value="reset">Reset</button>
             <button type="submit" class="btn btn-primary" name="submit" value="Submit">Submit</button>

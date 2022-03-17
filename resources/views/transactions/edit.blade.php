@@ -1,46 +1,75 @@
 @extends('dashboard')
 @section('content')
-<form method="post" action="{{route('transactions.update', $transaction->id)}}" class="col-md-10 mx-auto">
-    @method('POST')
-    @csrf
-    <div class="form-group">
-        <label for="name">User Id</label>
-            <div>
-                <input type="text" class="form-control" id="user_id" name="user_id"  value="{{$transaction->user_id}}"/>
+
+<div class="app-page-title">
+    <div class="page-title-wrapper">
+        <div class="page-title-heading">
+            <div class="page-title-icon">
+                <i class="fal fa-edit icon-gradient bg-ripe-malin"></i>
+            </div>
+            <div>Edit Transaction
+                <div class="page-title-subheading">Edit details in the following fields below with correct information.</div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="order_id">Order Id</label>
-                <div>
-                    <input type="text" class="form-control" id="order_id" name="order_id"  value="{{$transaction->order_id}}" />
-                </div>
+        <div class="page-title-actions">
+            <div class="d-inline-block">
+                <a href="{{route('transactions.index')}}" type="button" aria-haspopup="true" aria-expanded="false" class="btn-shadow btn btn-info">
+                    <span class="btn-icon-wrapper pr-2 opacity-7">
+                        <i class="fal fa-pencil-alt fa-w-20"></i>
+                    </span>
+                    Manage Transactions
+                </a>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="type">Type</label>
-                <div>
-                    <input type="text" class="form-control" id="type" name="type"  value="{{$transaction->type}}" />
-                </div>
-        </div>
-        <div class="form-group">
-            <label for="mode">Mode</label>
-                <div>
-                    <input type="text" class="form-control" id="mode" name="mode"  value="{{$transaction->mode}}" />
-                </div>
-        </div>
-        <div class="form-group">
-            <label for="status">Status</label>
-                <div>
-                    <input type="text" class="form-control" id="status" name="status"  value="{{$transaction->status}}" />
-                </div>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary" name="submit" value="Submit">Submit</button>
-        </div>
-</form>
+    </div>
+</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-      {{-- </body>
-    </html> --}}
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <h4 class="mt-2">
+            <span>It only takes a <span class="text-success">few seconds</span> to edit details of a transaction.</span>
+        </h4><br>
+        <form method="post" action="{{route('transactions.update', $transaction->id)}}" id="signupForm" class="col-md-10 mx-auto">
+            @method('POST')
+            @csrf
+            <div class="form-group">
+                <h5 class="card-title">ORDER ID</h5>
+                <div>
+                    <select name="order_id" id="order_id" class="form-control">
+                        <option value="" class="option_color">Select Order Id</option>
+                        @foreach ($orders as $order)
+                            <option value="{{$order->id}}" {{$transaction->order_id == $order->id  ? 'selected' : ''}}>{{$order->id}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <h5 class="card-title">MODE</h5>
+                <div>
+                    <select name="mode" id="mode" class="form-control">
+                        <option value="" class="option_color">Select Mode</option>
+                        <option {{$transaction->mode == 'COD'  ? 'selected' : ''}}>COD</option>
+                        <option {{$transaction->mode == 'Online'  ? 'selected' : ''}}>Online</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <h5 class="card-title">TYPE</h5>
+                <div>
+                    <select name="type" id="type" class="form-control">
+                        <option value="" class="option_color">Select Type</option>
+                        <option {{$transaction->type == 'Active'  ? 'selected' : ''}}>Active</option>
+                        <option {{$transaction->type == 'Inactive'  ? 'selected' : ''}}>Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="modal-footer d-block text-center">
+                    <button class="btn-wide btn-pill btn-shadow btn-hover-shine btn btn-primary btn-lg btn-gradient-primary">Update Transaction Details</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 @endsection
